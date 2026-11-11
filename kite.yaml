@@ -8,6 +8,7 @@ site:
 content:
   store: file
   dir: content
+  defaultCategory: ""
 
 build:
   output: public
