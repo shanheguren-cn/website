@@ -18,5 +18,17 @@ publish:
     - https://explore.kite.plus/api/v1/ping
 theme:
   settings:
-    accent: '#a3473b'
-  name: default
+    accent: '#8a5a9e'
+    web_fonts: true
+    motto: 从乱麻中寻回秩序，在庸常里打捞不同
+    show_banner: false
+    nav:
+      - label: 首页
+        url: /
+      - label: 归档
+        url: /posts/
+      - label: 关于
+        url: /about/
+      - label: 友链
+        url: /links/
+  name: almanac

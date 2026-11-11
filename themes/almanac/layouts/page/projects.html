@@ -1,0 +1,38 @@
+{{ define "main" }}
+{{- /* The projects in the page's front matter, grouped by state as
+       projects.html draws them. A site that declares a kind named project
+       gives each its own page and a form in the studio instead, drawn by
+       project/.
+
+       projects:
+         - title: fluxa
+           state: active         # maintained, experimental, archived, or any word
+           summary: A gateway for AI models.
+           tech: [Go, TypeScript]
+           icon: /images/fluxa.svg
+           repo: https://github.com/you/fluxa
+           homepage: https://fluxa.dev
+           demo: https://demo.fluxa.dev
+           link: /posts/fluxa/   # a page of its own, which the card leads to */ -}}
+{{- $s := .Site.ThemeSettings -}}
+{{- $lang := .Site.Language -}}
+{{- $projects := .Page.Params.projects -}}
+{{- $total := 0 -}}
+{{- range $projects }}{{ $total = math.Add $total 1 }}{{ end -}}
+<div class="space-y-10"{{ with $s.github_user }} data-github-user="{{ . }}"{{ end }}>
+  {{- partial "page-header.html" (dict
+      "eyebrow" "PROJECTS"
+      "title" .Page.Title
+      "description" .Page.Params.description
+      "content" .Page.Content
+      "meta" (partial "t.html" (dict "k" "projects_meta" "lang" $lang "n" $total))) }}
+
+  {{- if $projects }}
+  {{ partial "projects.html" (dict "ctx" . "entries" $projects) }}
+  {{- else }}
+  <div class="empty-state">{{ partial "t.html" (dict "k" "projects_empty" "lang" $lang) }}</div>
+  {{- end }}
+
+  {{ partial "comments.html" . }}
+</div>
+{{ end }}

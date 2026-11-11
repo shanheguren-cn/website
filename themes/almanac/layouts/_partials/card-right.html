@@ -1,0 +1,20 @@
+{{- /* The standard card turned around: the text on the left, the cover
+       down the right edge. dict: page, site */ -}}
+{{- $p := .page -}}
+<article class="card card-hover group overflow-hidden">
+  <a href="{{ $p.RelPermalink }}" class="flex min-h-36">
+    <div class="flex min-w-0 flex-1 flex-col justify-between p-4 sm:p-5">
+      <div class="min-w-0 space-y-1.5">
+        {{- partial "card-meta.html" (dict "page" $p "site" .site) }}
+        <h3 class="line-clamp-2 text-[15px] font-semibold leading-snug tracking-tight transition-colors group-hover:text-brand sm:text-base">{{ $p.Title }}</h3>
+        {{- with $p.Description }}
+        <p class="line-clamp-2 text-[12.5px] leading-relaxed text-muted-foreground sm:text-[13px]">{{ str.Truncate 100 . }}</p>
+        {{- end }}
+      </div>
+      {{- partial "card-tags.html" (dict "page" $p "limit" 4 "class" "mt-2.5") }}
+    </div>
+    <div class="relative w-28 shrink-0 border-l border-border/70 sm:w-52">
+      <div class="absolute inset-0">{{ partial "post-cover.html" . }}</div>
+    </div>
+  </a>
+</article>
