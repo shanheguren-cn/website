@@ -1,0 +1,21 @@
+site:
+  title: 山河故人
+  author: 山河故人
+  baseURL: http://localhost:1717
+  language: zh-CN
+  description: 山河故人的博客
+
+content:
+  store: file
+  dir: content
+
+build:
+  output: public
+
+publish:
+  ping:
+    - https://explore.kite.plus/api/v1/ping
+theme:
+  settings:
+    accent: '#a3473b'
+  name: default
