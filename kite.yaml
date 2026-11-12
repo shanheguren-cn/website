@@ -23,6 +23,8 @@ theme:
     web_fonts: true
     color_scheme: dark
     avatar: /avatar.webp
+    favicon: /favicon.png
+    favicon: /favicon.png
     position: AI开发
     location: 杭州
     motto: 修身、齐家
