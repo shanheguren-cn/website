@@ -15,6 +15,7 @@
   {{- with $s.accent }}{{ if ne (str.Lower .) "#c96442" }}
   <style>:root { --accent-color: {{ . }}; --accent-color-night: color-mix(in oklab, {{ . }} 78%, white); }</style>
   {{- end }}{{ end }}
+  <link rel="stylesheet" href="/custom.css">
   {{- if $s.web_fonts }}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

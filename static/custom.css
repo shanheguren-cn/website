@@ -1,0 +1,134 @@
+/* ============================================================
+   pi.dev 风格覆盖层 —— 加载在 almanac.css 之后,同优先级靠后者生效
+   配色:潮汐蓝 #6a9fcc(暗)/ 线蓝 #4b607c(明),深蓝灰画布
+   字体:等宽为主(JetBrains Mono),衬线只留给大标题
+   ============================================================ */
+
+/* ---------- 浅色模式(pi.dev 线蓝) ---------- */
+:root {
+  --font-sans: "JetBrains Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  --background: #eceae7;
+  --foreground: #252f3d;
+  --muted: #e1deda;
+  --muted-foreground: #5f6d7d;
+  --border: #c8ccd1;
+  --card: #f7f6f4;
+  --card-foreground: #252f3d;
+  --accent: #dde3e9;
+  --accent-foreground: #252f3d;
+  --brand: #4b607c;
+  --brand-foreground: #f5f4f2;
+  --accent-color: #4b607c;
+  --accent-color-night: #6a9fcc;
+}
+
+/* ---------- 深色模式(pi.dev 潮汐蓝 / 月光石画布) ---------- */
+:root[data-theme="dark"] {
+  --background: #161d27;
+  --foreground: #ebe7e4;
+  --muted: #121a24;
+  --muted-foreground: #93a1b0;
+  --border: #28323f;
+  --card: #1a2230;
+  --card-foreground: #e4e6e8;
+  --accent: #1e2836;
+  --accent-foreground: #ebe7e4;
+  --brand: #6a9fcc;
+  --brand-foreground: #0d1116;
+  --accent-color: #6a9fcc;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #161d27;
+    --foreground: #ebe7e4;
+    --muted: #121a24;
+    --muted-foreground: #93a1b0;
+    --border: #28323f;
+    --card: #1a2230;
+    --card-foreground: #e4e6e8;
+    --accent: #1e2836;
+    --accent-foreground: #ebe7e4;
+    --brand: #6a9fcc;
+    --brand-foreground: #0d1116;
+    --accent-color: #6a9fcc;
+    color-scheme: dark;
+  }
+}
+
+/* ---------- 排版:正文等宽化 ---------- */
+/* 文章正文(pi.dev 的终端气质:等宽、略缩、行距放宽) */
+.prose-almanac {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  letter-spacing: 0;
+}
+/* 代码块与正文同字号,避免等宽正文下显得突兀 */
+.prose-almanac code,
+.prose-almanac pre {
+  font-size: 0.9em;
+}
+/* 首页简介与卡片摘要也改为等宽,只留大标题衬线 */
+.whitespace-pre-line.font-serif,
+.line-clamp-2.font-serif,
+.line-clamp-3.font-serif {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+/* 选区颜色:潮汐蓝 */
+::selection {
+  background: rgba(106, 159, 204, 0.35);
+}
+
+/* ---------- 细节:pi.dev 式低对比描边 ---------- */
+/* 卡片与分隔线更冷静 */
+.card {
+  border-color: var(--border);
+}
+
+/* ============================================================
+   布局:宽屏改为左侧栏 + 内容,页脚内容进侧栏底部
+   (窄屏保持原顶栏 + 抽屉菜单不变)
+   ============================================================ */
+@media (min-width: 1024px) {
+  /* 顶栏和页脚退场 */
+  body > header.site-header {
+    display: none;
+  }
+  body > footer {
+    display: none;
+  }
+
+  /* 抽屉常驻为左侧栏(主题在宽屏默认 display:none!important,需覆盖) */
+  body > .drawer {
+    display: flex !important;
+    visibility: visible !important;
+    transform: none !important;
+    box-shadow: none;
+    width: 280px;
+    max-width: 280px;
+    z-index: 10;
+  }
+  /* 侧栏内的关闭按钮、遮罩无意义,隐藏;顶部标题条与头像行重复,也隐藏 */
+  body > .drawer .drawer-close {
+    display: none;
+  }
+  body > .drawer > div:first-of-type {
+    display: none;
+  }
+  body > .drawer-backdrop {
+    display: none !important;
+  }
+
+  /* 内容区让出侧栏宽度并加宽、水平居中 */
+  body {
+    padding-left: 280px;
+  }
+  body > div.flex-1 {
+    margin: 0 auto;
+    max-width: 72rem;
+  }
+}

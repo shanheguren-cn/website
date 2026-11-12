@@ -4,6 +4,8 @@ title: 最近有点累
 slug: 最近有点累
 status: published
 created_at: 2026-11-12T01:08:54Z
+categories:
+  - 日记
 ---
 
 近来，几个项目都是开发验证复杂，但又不属于被认为有价值的项目。有价值的项目得和AI沾边，一切面向和AI沾边，最终都是面向KPI。也属正常，毕竟 KPI === 年终奖。

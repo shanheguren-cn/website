@@ -1,5 +1,6 @@
 site:
   title: 山河故人
+  head_html: '<link rel="stylesheet" href="/custom.css">'
   author: 山河故人
   baseURL: http://localhost:1717
   language: zh-CN
@@ -20,15 +21,27 @@ theme:
   settings:
     accent: '#8a5a9e'
     web_fonts: true
+    color_scheme: dark
+    position: AI开发
+    location: 杭州
     motto: 修身、齐家
     show_banner: false
+    show_issue: false
     nav:
       - label: 首页
         url: /
-      - label: 归档
+      - label: 文章
         url: /posts/
-      - label: 关于
-        url: /about/
-      - label: 友链
-        url: /links/
   name: almanac
+plugins:
+  enabled:
+    - search
+    - comments
+  settings:
+    comments:
+      provider: giscus
+      repo: shanheguren-cn/website
+      repo_id: R_kgDOVqH8_g
+      category: Announcements
+      category_id: DIC_kwDOVqH8_s4DK7-w
+      mapping: id

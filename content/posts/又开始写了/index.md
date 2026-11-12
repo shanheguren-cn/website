@@ -4,6 +4,8 @@ title: "记录变化"
 slug: 又开始写了
 status: published
 created_at: 2026-11-11T03:11:50Z
+categories:
+  - 日记
 ---
 
 在这个AI开始野蛮生长的年代，我想找个一方天地写写文字，记录自己的变化。

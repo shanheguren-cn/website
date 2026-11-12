@@ -7,7 +7,6 @@
 {{- with .Paginator }}{{ $total = .TotalItems }}{{ end -}}
 <div class="mx-auto max-w-3xl space-y-10">
   {{- partial "page-header.html" (dict
-      "eyebrow" (partial "t.html" (dict "k" "archives" "lang" $lang))
       "title" (partial "page-title.html" .)
       "meta" (partial "t.html" (dict "k" "archives_meta" "lang" $lang "n" $total))) }}
 
