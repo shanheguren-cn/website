@@ -20,7 +20,7 @@ theme:
   settings:
     accent: '#8a5a9e'
     web_fonts: true
-    motto: 从乱麻中寻回秩序，在庸常里打捞不同
+    motto: 修身、齐家
     show_banner: false
     nav:
       - label: 首页
