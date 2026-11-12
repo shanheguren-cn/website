@@ -2,7 +2,7 @@
 id: 01M749E89AT9K9F4Z2A6RFWH7Z
 title: "记录变化"
 slug: 又开始写了
-status: draft
+status: published
 created_at: 2026-11-11T03:11:50Z
 ---
 

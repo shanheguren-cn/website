@@ -2,7 +2,7 @@
 id: 01M76MSWDJ0EQVQ5Z2PK2JW9EF
 title: 最近有点累
 slug: 最近有点累
-status: draft
+status: published
 created_at: 2026-11-12T01:08:54Z
 ---
 
