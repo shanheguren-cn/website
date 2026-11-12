@@ -15,7 +15,33 @@
 {{- $archive := url.For "list" "post" -}}
 
 {{- if eq $page 1 }}
-<div class="space-y-12"></div>
+<div class="space-y-12">
+  {{- if .Pages }}
+  {{- $limit := printf "%v" $s.home_count }}
+  {{- $shown := 0.0 }}
+  {{- $cut := false }}
+  <section class="space-y-4">
+    <div class="flex flex-col gap-4">
+      {{- $cut = false }}
+      {{- range $i, $p := .Pages }}
+        {{- if eq (printf "%d" $i) $limit }}{{ $cut = true }}{{ end }}
+        {{- if not $cut }}
+      {{ partial "card.html" (dict "page" $p "site" $.Site) }}
+        {{- end }}
+      {{- end }}
+    </div>
+
+    {{- if or $cut $more }}
+    <div class="pt-3 text-center">
+      <a href="{{ $archive }}" class="btn btn-outline btn-sm font-mono uppercase tracking-wider">
+        {{ partial "t.html" (dict "k" "view_more" "lang" $lang) }}
+        {{- partial "icon.html" (dict "name" "arrow-right" "class" "size-3.5") }}
+      </a>
+    </div>
+    {{- end }}
+  </section>
+  {{- end }}
+</div>
 {{- else }}
 <div class="space-y-8">
   {{- partial "page-header.html" (dict

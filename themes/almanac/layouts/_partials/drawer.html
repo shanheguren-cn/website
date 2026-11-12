@@ -6,49 +6,31 @@
 <label for="nav-toggle" class="drawer-backdrop print:hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" aria-hidden="true"></label>
 <aside class="drawer print:hidden fixed inset-y-0 left-0 z-50 flex w-80 max-w-[85vw] flex-col overflow-y-auto border-r border-border bg-background shadow-2xl shadow-black/20"
        aria-label="{{ partial "t.html" (dict "k" "nav" "lang" $lang) }}">
-  <div class="flex h-14 shrink-0 items-center justify-between border-b border-border px-4">
-    <span class="text-[15px] font-semibold tracking-tight">{{ .Site.Title }}</span>
+  <div class="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-border px-4">
+    <a href="{{ url.For "home" }}" class="min-w-0 truncate text-[17px] font-semibold tracking-tight transition-colors hover:text-brand">{{ .Site.Title }}</a>
+    <span class="flex shrink-0 items-center gap-1">
+      <button type="button" data-kite-search class="icon-btn" aria-label="搜索">
+        {{- partial "icon.html" "search" -}}
+      </button>
+      <button type="button" class="icon-btn theme-toggle" data-theme-toggle
+              aria-label="{{ partial "t.html" (dict "k" "theme_toggle" "lang" $lang) }}"
+              title="{{ partial "t.html" (dict "k" "theme_auto" "lang" $lang) }}"
+              data-light="{{ partial "t.html" (dict "k" "theme_light" "lang" $lang) }}"
+              data-dark="{{ partial "t.html" (dict "k" "theme_dark" "lang" $lang) }}"
+              data-auto="{{ partial "t.html" (dict "k" "theme_auto" "lang" $lang) }}">
+        <span class="theme-icon theme-icon-light">{{ partial "icon.html" "sun" }}</span>
+        <span class="theme-icon theme-icon-dark">{{ partial "icon.html" "moon" }}</span>
+        <span class="theme-icon theme-icon-auto">{{ partial "icon.html" "monitor" }}</span>
+      </button>
+    </span>
     <label for="nav-toggle" class="icon-btn drawer-close -mr-1" title="{{ partial "t.html" (dict "k" "close" "lang" $lang) }}">
       {{- partial "icon.html" "x" -}}
     </label>
   </div>
 
-  <div class="flex items-center gap-3 px-4 py-4">
-    {{- partial "avatar.html" (dict "site" .Site "size" "size-12") }}
-    <div class="min-w-0 flex-1">
-      <div class="truncate text-[15px] font-semibold">{{ $author }}</div>
-      {{- if or $s.position $s.location }}
-      <div class="truncate text-[12px] text-muted-foreground">
-        {{- with $s.position }}<span>{{ . }}</span>{{ end }}
-        {{- if and $s.position $s.location }}<span class="mx-1 opacity-40">·</span>{{ end }}
-        {{- with $s.location }}<span>{{ . }}</span>{{ end -}}
-      </div>
-      {{- end }}
-    </div>
-  </div>
-
-  <div class="flex items-center px-4 py-2.5">
-    <button type="button" data-kite-search
-            class="search-box flex h-8 w-full items-center gap-2 rounded-md border border-border bg-background/70 px-2.5 font-mono text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
-      {{- partial "icon.html" (dict "name" "search" "class" "size-3.5 shrink-0") }}
-      <span>搜索…</span>
-      <kbd class="ml-auto inline-flex shrink-0 items-center rounded border border-border px-1 text-[10px]">⌘K</kbd>
-    </button>
-  </div>
 
 
-
-  <nav class="px-3 py-3">
-    {{- partial "nav-links.html" (dict "ctx" . "variant" "drawer") }}
-  </nav>
-
-  <section class="sidebar-posts px-3 pb-3">
-    <div class="mb-1 flex items-center gap-1 px-2">
-      <button type="button" data-sb-mode="cat"
-              class="sb-tab rounded-md px-2 py-0.5 font-mono text-[11px] transition-colors">分类</button>
-      <button type="button" data-sb-mode="date"
-              class="sb-tab rounded-md px-2 py-0.5 font-mono text-[11px] transition-colors">日期</button>
-    </div>
+  <section class="sidebar-posts pb-3">
     <ul id="sidebar-post-list" class="space-y-px"></ul>
   </section>
 
@@ -59,36 +41,40 @@
     var section = list.closest('section');
     var esc = function (s) { return String(s || '').replace(/[&<>"]/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
-    var here = location.pathname.replace(/\/+$/, '');
+    var here = decodeURIComponent(location.pathname).replace(/\/+$/, '');
     var posts = [];
-    var mode = 'cat';
+    var CACHE_KEY = 'sidebar-posts-v1', CACHE_TTL = 3600000;
+
+    function readCache() {
+      try {
+        var c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+        return (c && Array.isArray(c.posts) && Date.now() - c.time < CACHE_TTL) ? c.posts : null;
+      } catch (e) { return null; }
+    }
+    function writeCache(posts) {
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ time: Date.now(), posts: posts })); } catch (e) {}
+    }
 
     function itemHTML(p) {
-      var u = (p.url || '').replace(/\/+$/, '');
       var md = (p.date || '').slice(5, 10) || '';
-      var act = here === u ? ' aria-current="page" style="color:var(--brand);background:var(--accent)"' : '';
-      return '<li><a href="' + esc(p.url) + '"' + act +
-        ' class="group -mx-2 flex items-baseline gap-3 rounded-md px-2 py-1.5 transition-colors hover:bg-accent/50">' +
-        (md ? '<span class="w-9 shrink-0 font-mono text-[10px] tabular-nums text-muted-foreground">' + esc(md) + '</span>' : '') +
-        '<span class="line-clamp-1 flex-1 text-[13px] leading-snug">' + esc(p.title) + '</span></a></li>';
+      var act = here === decodeURIComponent(p.url).replace(/\/+$/, '');
+      return '<li><a href="' + esc(p.url) + '"' + (act ? ' aria-current="page"' : '') +
+        ' class="group flex items-baseline gap-3 rounded-md px-2.5 py-2.5 transition-colors ' +
+        (act ? 'bg-brand/10 font-medium text-brand' : 'text-foreground/85 hover:bg-accent hover:text-foreground') + '">' +
+        '<span class="line-clamp-1 flex-1 text-[15px]">' + esc(p.title) + '</span>' +
+        (md ? '<span class="shrink-0 font-mono text-[10px] tabular-nums text-muted-foreground">' + esc(md) + '</span>' : '') +
+        '</a></li>';
     }
     function headHTML(name) {
-      return '<li class="flex items-baseline gap-2 px-2 pb-1 pt-2">' +
-        '<span class="font-mono text-[13px] font-bold">' + esc(name) + '</span></li>';
+      return '<li class="flex items-baseline gap-2 px-2.5 pb-2.5 pt-2" style="margin-top:15px">' +
+        '<span class="font-mono text-[13px]" style="color:#7a7f8a">' + esc(name) + '</span></li>';
     }
     function render() {
       if (!posts.length) { section.style.display = 'none'; return; }
       var groups = {};
-      if (mode === 'date') {
-        posts.forEach(function (p) {
-          var y = (p.date || '').slice(0, 4) || '未标注';
-          (groups[y] = groups[y] || []).push(p);
-        });
-      } else {
-        posts.forEach(function (p) {
-          (groups[p.cat || '未分类'] = groups[p.cat || '未分类'] || []).push(p);
-        });
-      }
+      posts.forEach(function (p) {
+        (groups[p.cat || '未分类'] = groups[p.cat || '未分类'] || []).push(p);
+      });
       var html = '';
       Object.keys(groups).sort(function (a, b) {
         var pa = groups[a][0], pb = groups[b][0];
@@ -99,18 +85,9 @@
       });
       list.innerHTML = html;
     }
-    function setMode(m) {
-      mode = m;
-      Array.prototype.forEach.call(document.querySelectorAll('.sb-tab'), function (t) {
-        var on = t.getAttribute('data-sb-mode') === m;
-        t.style.background = on ? 'var(--accent)' : 'transparent';
-        t.style.color = on ? 'var(--brand)' : 'var(--muted-foreground)';
-      });
-      render();
-    }
-    Array.prototype.forEach.call(document.querySelectorAll('.sb-tab'), function (t) {
-      t.addEventListener('click', function () { setMode(t.getAttribute('data-sb-mode')); });
-    });
+
+    var cached = readCache();
+    if (cached) { posts = cached; render(); }
 
     fetch('{{ url.Rel "posts/" }}').then(function (r) { return r.text(); }).then(function (text) {
       var doc = new DOMParser().parseFromString(text, 'text/html');
@@ -132,30 +109,30 @@
                    cat: cat };
         });
       });
+      var fresh = [];
       Object.keys(byYear).sort().reverse().forEach(function (y) {
-        posts = posts.concat(byYear[y]);
+        fresh = fresh.concat(byYear[y]);
       });
-      setMode('cat');
+      posts = fresh;
+      writeCache(posts);
+      render();
     }).catch(function () { section.style.display = 'none'; });
   })();
   </script>
-  <div class="mt-auto border-t border-border px-4 pb-4">
+  <div class="mt-auto border-t border-border px-4">
     {{- partial "social-links.html" (dict "site" .Site "id" "drawer" "variant" "ghost" "popover" "up") }}
-    <div class="flex items-center justify-between gap-x-3 pt-1 font-mono text-[11px] text-muted-foreground/70">
-      <span>© {{ time.Format "2006" .Site.BuildTime }}</span>
+    <div class="flex items-center justify-between gap-x-3 font-mono text-[11px] text-muted-foreground/70">
+      <span class="flex items-center gap-2">
+        {{- partial "avatar.html" (dict "site" .Site "size" "avatar-30") }}
+        <span>© {{ time.Format "2006" .Site.BuildTime }}</span>
+      </span>
       <span class="flex items-center gap-x-3">
-        <a href="{{ url.Rel "rss.xml" }}" class="transition-colors hover:text-foreground">RSS</a>
-        <a href="https://github.com/kite-plus/kite" target="_blank" rel="noopener" class="transition-colors hover:text-foreground">Kite</a>
-        <button type="button" class="icon-btn theme-toggle" data-theme-toggle
-                aria-label="{{ partial "t.html" (dict "k" "theme_toggle" "lang" $lang) }}"
-                title="{{ partial "t.html" (dict "k" "theme_auto" "lang" $lang) }}"
-                data-light="{{ partial "t.html" (dict "k" "theme_light" "lang" $lang) }}"
-                data-dark="{{ partial "t.html" (dict "k" "theme_dark" "lang" $lang) }}"
-                data-auto="{{ partial "t.html" (dict "k" "theme_auto" "lang" $lang) }}">
-          <span class="theme-icon theme-icon-light">{{ partial "icon.html" "sun" }}</span>
-          <span class="theme-icon theme-icon-dark">{{ partial "icon.html" "moon" }}</span>
-          <span class="theme-icon theme-icon-auto">{{ partial "icon.html" "monitor" }}</span>
-        </button>
+        <a href="{{ url.Rel "rss.xml" }}" aria-label="RSS" title="RSS" class="inline-flex items-center transition-colors hover:text-foreground">
+          {{- partial "icon.html" (dict "name" "rss" "class" "size-3.5") }}
+        </a>
+        <a href="https://github.com/kite-plus/kite" target="_blank" rel="noopener" aria-label="Kite" title="Kite" class="inline-flex items-center transition-colors hover:text-foreground">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor" width="22" height="22" style="transform:translateY(1px)" aria-hidden="true"><g transform="translate(32 32) scale(0.82) translate(-32 -32)"><path d="M10 14.5 L27 21 L27 30 L10 23.5 Z"/><path d="M10 32 L27 38.5 L27 49 L10 42.5 Z"/><path d="M37 21 L54 14.5 L54 42.5 L37 49 Z"/></g></svg>
+        </a>
       </span>
     </div>
   </div>

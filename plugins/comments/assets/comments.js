@@ -117,7 +117,7 @@
       mapping: byID ? "specific" : settings.mapping,
       term: byID ? config.page : "",
       strict: "0",
-      "reactions-enabled": "1",
+      "reactions-enabled": "0",
       "emit-metadata": "0",
       "input-position": "top",
       theme: dark() ? "dark" : "light",

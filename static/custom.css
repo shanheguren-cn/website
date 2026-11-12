@@ -31,9 +31,9 @@
   --muted: #121a24;
   --muted-foreground: #93a1b0;
   --border: #28323f;
-  --card: #1a2230;
+  --card: #161b22;
   --card-foreground: #e4e6e8;
-  --accent: #1e2836;
+  --accent: #161b22;
   --accent-foreground: #ebe7e4;
   --brand: #6a9fcc;
   --brand-foreground: #0d1116;
@@ -47,9 +47,9 @@
     --muted: #121a24;
     --muted-foreground: #93a1b0;
     --border: #28323f;
-    --card: #1a2230;
+    --card: #161b22;
     --card-foreground: #e4e6e8;
-    --accent: #1e2836;
+    --accent: #161b22;
     --accent-foreground: #ebe7e4;
     --brand: #6a9fcc;
     --brand-foreground: #0d1116;
@@ -112,11 +112,8 @@
     max-width: 280px;
     z-index: 10;
   }
-  /* 侧栏内的关闭按钮、遮罩无意义,隐藏;顶部标题条与头像行重复,也隐藏 */
+  /* 侧栏内的关闭按钮、遮罩无意义,隐藏 */
   body > .drawer .drawer-close {
-    display: none;
-  }
-  body > .drawer > div:first-of-type {
     display: none;
   }
   body > .drawer-backdrop {
@@ -127,8 +124,61 @@
   body {
     padding-left: 280px;
   }
+
+  /* 阅读条(分类/标题/回到顶部):贴内容区顶部,不再横跨侧栏 */
+  .reading-bar {
+    top: 0;
+    left: 280px;
+  }
+  /* 归档页年份条:贴内容区顶部 */
+  .sticky.top-14 {
+    top: 0;
+  }
   body > div.flex-1 {
     margin: 0 auto;
     max-width: 72rem;
   }
+}
+
+/* 侧栏底部 30px 头像 */
+.avatar-30 {
+  width: 30px;
+  height: 30px;
+}
+
+/* 侧栏文章列表左右间距 34px,悬浮背景 #161C25 */
+.sidebar-posts {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.sidebar-posts a:hover {
+  background-color: #161c25;
+}
+/* 已高亮(当前文章)的条目悬浮时保持原样 */
+.sidebar-posts a[aria-current="page"]:hover {
+  background-color: color-mix(in srgb, var(--brand) 10%, transparent);
+  color: var(--brand);
+}
+
+/* 文章详情页宽度与首页文章列表一致(72rem) */
+main > .max-w-3xl {
+  max-width: 72rem;
+}
+
+/* 底部行上方横线去除 */
+body > .drawer div.mt-auto {
+  border-top: none;
+}
+
+/* 侧栏底部头像上下间距 12px */
+.drawer .avatar-30 {
+  margin: 12px 0;
+}
+
+/* 文章详情:去掉评论标题与评论区上方的横线 */
+.comments:not(:empty)::before {
+  content: none;
+}
+.comments:not(:empty) {
+  border-top: none;
 }

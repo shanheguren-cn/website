@@ -22,6 +22,7 @@ theme:
     accent: '#8a5a9e'
     web_fonts: true
     color_scheme: dark
+    avatar: /avatar.webp
     position: AI开发
     location: 杭州
     motto: 修身、齐家
