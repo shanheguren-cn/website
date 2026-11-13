@@ -6,7 +6,7 @@
 {{- $count := 0.0 -}}
 {{- range .Page.TableOfContents }}{{ if and (ge .Level 2) (le .Level 4) .ID }}{{ $count = math.Add $count 1 }}{{ end }}{{ end -}}
 {{- if and .Site.ThemeSettings.show_toc (ge $count 2.0) }}
-<aside class="fixed top-28 hidden max-h-[calc(100vh-9rem)] w-52 overflow-y-auto print:hidden toc:block"
+<aside class="site-toc fixed top-28 hidden max-h-[calc(100vh-9rem)] w-52 overflow-y-auto print:hidden toc:block"
        style="left: calc(50% + 24rem + 2.5rem);" aria-label="{{ partial "t.html" (dict "k" "toc" "lang" $lang) }}">
   <div class="eyebrow mb-3">{{ partial "t.html" (dict "k" "toc" "lang" $lang) }}</div>
   <nav class="toc-list">

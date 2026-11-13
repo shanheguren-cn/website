@@ -182,3 +182,14 @@ body > .drawer div.mt-auto {
 .comments:not(:empty) {
   border-top: none;
 }
+
+/* TOC 固定在整站左侧(侧栏右侧 16px),有目录的文章页内容区右移让位 */
+@media (min-width: 64rem) {
+  .site-toc {
+    display: block !important;
+    left: 296px !important;
+  }
+  body:has(.site-toc) {
+    padding-left: 504px;
+  }
+}
