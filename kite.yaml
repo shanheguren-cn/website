@@ -22,7 +22,7 @@ theme:
     accent: '#8a5a9e'
     web_fonts: true
     color_scheme: dark
-    avatar: /avatar.webp
+    avatar: /avatar.jpg
     favicon: /favicon.png
     position: AI开发
     location: 杭州
