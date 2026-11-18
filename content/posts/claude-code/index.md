@@ -6,7 +6,8 @@ status: published
 created_at: 2026-11-12T07:06:20Z
 categories:
   - AI
-published_at: 2026-11-13T12:09:08.81Z
+published_at: 2026-11-13T12:09:08Z
+cover: claudecode.png
 ---
 
 ## 介绍
@@ -53,9 +54,15 @@ Claude Code 是 一个聪明且能干活的变成伙伴。
 
 | 命令 | 说明 | 示例 |
 | --- | --- | --- |
-| /model | **切换模型** | - **Sonnet**：最适合日常编码任务（速度快、性价比高）- **Opus**：适合特别复杂的架构设计和深度推理 |
+| /model<br>然后切换 | **切换模型**<br>- **Sonnet**：最适合日常编码任务（速度快、性价比高）- **Opus**：适合特别复杂的架构设计和深度推理 | 终端命令：claude --model deepseek-v4-pro<br> |
 | | | |
 | | | |
+
+### 界面与体验
+
+| 命令 | 说明 | 示例 |
+| --- | --- | --- |
+| /status | 查看版本、模型、账号、连接状态 | |
 
 ## 权限模式
 
@@ -74,7 +81,7 @@ Claude Code 是 一个聪明且能干活的变成伙伴。
 | --- | --- | --- |
 | CLAUDE.md | | |
 | MEMORY.md | | |
-| settings | 位置：.claude/settings.json | |
+| settings | 位置：\~/.claude/settings.json | |
 
 
 
