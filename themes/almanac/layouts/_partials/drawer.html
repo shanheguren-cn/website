@@ -123,10 +123,13 @@
     {{- partial "social-links.html" (dict "site" .Site "id" "drawer" "variant" "ghost" "popover" "up") }}
     <div class="flex items-center justify-between gap-x-3 font-mono text-[11px] text-muted-foreground/70">
       <span class="flex items-center gap-2">
-        {{- partial "avatar.html" (dict "site" .Site "size" "avatar-30") }}
+        {{- partial "avatar.html" (dict "site" .Site "size" "avatar-30" "href" $s.about_page) }}
         <span>© {{ time.Format "2006" .Site.BuildTime }}</span>
       </span>
       <span class="flex items-center gap-x-3">
+        <a href="{{ url.Rel "links/" }}" aria-label="友链" title="友链" class="inline-flex items-center transition-colors hover:text-foreground">
+          {{- partial "icon.html" (dict "name" "link" "class" "size-3.5") }}
+        </a>
         <a href="{{ url.Rel "rss.xml" }}" aria-label="RSS" title="RSS" class="inline-flex items-center transition-colors hover:text-foreground">
           {{- partial "icon.html" (dict "name" "rss" "class" "size-3.5") }}
         </a>

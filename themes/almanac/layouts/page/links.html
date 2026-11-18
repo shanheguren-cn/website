@@ -18,7 +18,8 @@
 {{- $total := 0.0 -}}
 {{- range $groups }}{{ range .items }}{{ $total = math.Add $total 1 }}{{ end }}{{ end -}}
 {{- $siteURL := str.TrimSuffix "/" (url.Abs "/") -}}
-{{- $siteDesc := .Site.Description -}}
+{{- $siteDesc := .Page.Params.card_desc -}}
+{{- if not $siteDesc }}{{ $siteDesc = .Site.Description }}{{ end -}}
 {{- if not $siteDesc }}{{ $siteDesc = partial "t.html" (dict "k" "hero_text" "lang" $lang) }}{{ end -}}
 {{- $avatar := "" -}}
 {{- with $s.avatar }}{{ $avatar = url.Abs . }}{{ end -}}
@@ -26,7 +27,7 @@
   {{- partial "page-header.html" (dict
       "eyebrow" (partial "t.html" (dict "k" "links_label" "lang" $lang))
       "title" (.Page.Params.heading | default (partial "t.html" (dict "k" "links_title" "lang" $lang)))
-      "description" (.Page.Params.description | default (partial "t.html" (dict "k" "links_text" "lang" $lang)))
+      "description" .Page.Params.description
       "content" .Page.Content) }}
 
   {{- /* This site, as another site would list it. */}}
@@ -40,10 +41,6 @@
       {{- partial "avatar.html" (dict "site" .Site "size" "size-12 md:size-14" "dot" false) }}
       <div class="min-w-0 flex-1 space-y-1">
         <div class="text-base font-semibold tracking-tight md:text-[17px]">{{ .Site.Title }}</div>
-        <a href="{{ $siteURL }}" target="_blank" rel="noopener" class="inline-flex max-w-full items-center gap-1.5 font-mono text-[12px] text-brand hover:underline">
-          <span class="truncate">{{ str.TrimPrefix "http://" (str.TrimPrefix "https://" $siteURL) }}</span>
-          {{- partial "icon.html" (dict "name" "external-link" "class" "size-3 shrink-0") }}
-        </a>
         <p class="text-[13px] leading-relaxed text-muted-foreground">{{ $siteDesc }}</p>
       </div>
     </div>

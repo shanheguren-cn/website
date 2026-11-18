@@ -2,7 +2,7 @@ site:
   title: 山河故人
   head_html: '<link rel="stylesheet" href="/custom.css">'
   author: 山河故人
-  baseURL: http://localhost:1717
+  baseURL: https://shanheguren.cn/
   language: zh-CN
   description: 山河故人的博客
 
